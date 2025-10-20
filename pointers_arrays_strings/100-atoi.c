@@ -19,7 +19,7 @@ int _atoi(char *s)
 		else if (*s >= '0' && *s <= '9')
 		{
 			started = 1;
-			
+
 			/* Check for potential overflow */
 			if (result > (2147483647 - (*s - '0')) / 10)
 			{
@@ -28,7 +28,7 @@ int _atoi(char *s)
 				else
 					return (-2147483648);
 			}
-			
+
 			result = result * 10 + (*s - '0');
 		}
 		else if (*s == '+')
