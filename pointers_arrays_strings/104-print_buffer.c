@@ -32,24 +32,22 @@ void print_buffer(char *b, int size)
 			else
 				printf("  ");
 
-			if (j % 2 == 1)
+			if (j % 2 == 1 && j < 9)
 				printf(" ");
 		}
+
+		printf(" ");
 
 		/* Print the ASCII content */
 		for (j = 0; j < 10; j++)
 		{
-			if (i + j < size)
-			{
-				if (isprint((unsigned char)b[i + j]))
-					printf("%c", b[i + j]);
-				else
-					printf(".");
-			}
+			if (i + j >= size)
+				break;
+
+			if (isprint((unsigned char)b[i + j]))
+				printf("%c", b[i + j]);
 			else
-			{
-				printf(" ");
-			}
+				printf(".");
 		}
 		printf("\n");
 	}
