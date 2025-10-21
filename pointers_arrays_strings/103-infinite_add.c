@@ -1,5 +1,14 @@
 #include "main.h"
 
+/**
+ * infinite_add - Adds two numbers represented as strings
+ * @n1: First number string
+ * @n2: Second number string
+ * @r: Buffer to store the result
+ * @size_r: Size of the buffer
+ *
+ * Return: Pointer to result or 0 if result can't be stored in r
+ */
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
 	int len1 = 0, len2 = 0, carry = 0;
