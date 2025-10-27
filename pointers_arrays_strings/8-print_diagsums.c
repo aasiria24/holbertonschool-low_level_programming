@@ -18,7 +18,7 @@ void print_diagsums(int *a, int size)
 	{
 		/* Main diagonal: a[i][i] */
 		sum1 += a[i * size + i];
-		
+
 		/* Secondary diagonal: a[i][size - 1 - i] */
 		sum2 += a[i * size + (size - 1 - i)];
 	}
