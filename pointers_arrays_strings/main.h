@@ -3,7 +3,7 @@
 #ifndef NULL
 #define NULL ((void *)0)
 #endif
-
+void set_string(char **s, char *to);
 int _putchar(char c);
 int _isupper(int c);
 int _isdigit(int c);
