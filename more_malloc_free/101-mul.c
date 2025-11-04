@@ -11,6 +11,9 @@ int is_digit(char *s)
 {
 	int i = 0;
 
+	if (s == NULL)
+		return (0);
+
 	while (s[i])
 	{
 		if (s[i] < '0' || s[i] > '9')
@@ -29,6 +32,9 @@ int is_digit(char *s)
 int _strlen(char *s)
 {
 	int len = 0;
+
+	if (s == NULL)
+		return (0);
 
 	while (s[len])
 		len++;
@@ -63,18 +69,16 @@ void multiply_strings(char *num1, char *num2)
 	len2 = _strlen(num2);
 	total_len = len1 + len2;
 
-	/* Allocate result array initialized to zeros */
+	/* Allocate result array */
 	result = malloc(sizeof(int) * total_len);
 	if (result == NULL)
-	{
 		print_error();
-		return; /* This won't be reached due to exit in print_error, but for clarity */
-	}
 
+	/* Initialize result array to zeros */
 	for (i = 0; i < total_len; i++)
 		result[i] = 0;
 
-	/* Multiply each digit and sum at appropriate positions */
+	/* Multiply each digit */
 	for (i = len1 - 1; i >= 0; i--)
 	{
 		carry = 0;
@@ -92,12 +96,12 @@ void multiply_strings(char *num1, char *num2)
 			result[i + j + 1] += carry;
 	}
 
-	/* Find the first non-zero digit */
+	/* Find first non-zero digit */
 	i = 0;
 	while (i < total_len && result[i] == 0)
 		i++;
 
-	/* Print the result */
+	/* Print result */
 	if (i == total_len)
 	{
 		_putchar('0');
@@ -109,6 +113,7 @@ void multiply_strings(char *num1, char *num2)
 	}
 	_putchar('\n');
 
+	/* Free allocated memory */
 	free(result);
 }
 
@@ -123,25 +128,28 @@ int main(int argc, char *argv[])
 {
 	char *num1, *num2;
 
+	/* Check argument count */
 	if (argc != 3)
 		print_error();
 
 	num1 = argv[1];
 	num2 = argv[2];
 
-	/* Validate that both arguments contain only digits */
+	/* Validate input contains only digits */
 	if (!is_digit(num1) || !is_digit(num2))
 		print_error();
 
-	/* Handle special case where one number is zero */
-	if ((_strlen(num1) == 1 && num1[0] == '0') || 
-	    (_strlen(num2) == 1 && num2[0] == '0'))
+	/* Handle zero cases efficiently */
+	if ((num1[0] == '0' && _strlen(num1) == 1) || 
+	    (num2[0] == '0' && _strlen(num2) == 1))
 	{
 		_putchar('0');
 		_putchar('\n');
 		return (0);
 	}
 
+	/* Perform multiplication */
 	multiply_strings(num1, num2);
+
 	return (0);
 }
