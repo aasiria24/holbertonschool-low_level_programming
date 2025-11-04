@@ -11,3 +11,4 @@ int is_digit(char *s);
 int _strlen(char *s);
 void multiply_strings(char *num1, char *num2);
 void print_error(void);
+#endif
