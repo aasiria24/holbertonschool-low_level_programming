@@ -1,6 +1,6 @@
 #include "main.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 /**
  * is_digit - checks if a string contains only digits
  * @s: the string to check
