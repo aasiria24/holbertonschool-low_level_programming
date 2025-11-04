@@ -66,7 +66,10 @@ void multiply_strings(char *num1, char *num2)
 	/* Allocate result array initialized to zeros */
 	result = malloc(sizeof(int) * total_len);
 	if (result == NULL)
+	{
 		print_error();
+		return; /* This won't be reached due to exit in print_error, but for clarity */
+	}
 
 	for (i = 0; i < total_len; i++)
 		result[i] = 0;
