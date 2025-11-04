@@ -7,6 +7,7 @@
  *
  * Return: 1 if all characters are digits, 0 otherwise
  */
+#endif
 int is_digit(char *s)
 {
 	int i = 0;
