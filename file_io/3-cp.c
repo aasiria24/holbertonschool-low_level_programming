@@ -2,33 +2,30 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <stdlib.h>
-#define BUFFER_SIZE 1024
+#include <errno.h>
 
 /**
 * main - Copies the content of a file to another file
-* @ac: Argument count
-* @av: Argument vector
+* @ac: argument count
+* @av: argument vector
 *
-* Return: 0 on success, or exit with appropriate error code
+* Return: 0 on success, exits with codes 97, 98, 99, 100 on errors
 */
-int main(int ac, char *av[])
+int main(int ac, char **av)
 {
 int fd_from, fd_to;
-ssize_t bytes_read, bytes_written;
-char buffer[BUFFER_SIZE];
-mode_t permissions = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
+ssize_t r, w;
+char buffer[1024];
 
-/* Check argument count */
 if (ac != 3)
 {
 dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 exit(97);
 }
 
-/* Open source file for reading */
 fd_from = open(av[1], O_RDONLY);
 if (fd_from == -1)
 {
@@ -36,8 +33,7 @@ dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
 exit(98);
 }
 
-/* Open destination file for writing - create if doesn't exist, truncate if exists */
-fd_to = open(av[2], O_CREAT | O_WRONLY | O_TRUNC, permissions);
+fd_to = open(av[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 if (fd_to == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
@@ -45,11 +41,10 @@ close(fd_from);
 exit(99);
 }
 
-/* Copy content in chunks of BUFFER_SIZE */
-while ((bytes_read = read(fd_from, buffer, BUFFER_SIZE)) > 0)
+while ((r = read(fd_from, buffer, 1024)) > 0)
 {
-bytes_written = write(fd_to, buffer, bytes_read);
-if (bytes_written == -1 || bytes_written != bytes_read)
+w = write(fd_to, buffer, r);
+if (w == -1 || w != r)
 {
 dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
 close(fd_from);
@@ -58,8 +53,7 @@ exit(99);
 }
 }
 
-/* Check if read failed */
-if (bytes_read == -1)
+if (r == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
 close(fd_from);
@@ -67,7 +61,6 @@ close(fd_to);
 exit(98);
 }
 
-/* Close file descriptors and check for errors */
 if (close(fd_from) == -1)
 {
 dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
@@ -83,3 +76,4 @@ exit(100);
 
 return (0);
 }
+
