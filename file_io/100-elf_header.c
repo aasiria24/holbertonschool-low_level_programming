@@ -156,7 +156,7 @@ case 97:
 printf("ARM\n");
 break;
 default:
-printf("<unknown: %d>\n", osabi);
+printf("<unknown: %x>\n", osabi);
 }
 }
 
