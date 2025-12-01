@@ -114,39 +114,42 @@ case 4:
 printf("GNU Hurd\n");
 break;
 case 5:
-printf("UNIX - Solaris\n");
+printf("<unknown: 5>\n");
 break;
 case 6:
-printf("AIX\n");
+printf("UNIX - Solaris\n");
 break;
 case 7:
-printf("IRIX\n");
+printf("AIX\n");
 break;
 case 8:
-printf("FreeBSD\n");
+printf("IRIX\n");
 break;
 case 9:
-printf("Tru64\n");
+printf("FreeBSD\n");
 break;
 case 10:
-printf("Novell Modesto\n");
+printf("Tru64\n");
 break;
 case 11:
-printf("OpenBSD\n");
+printf("Novell Modesto\n");
 break;
 case 12:
-printf("OpenVMS\n");
+printf("OpenBSD\n");
 break;
 case 13:
-printf("NonStop Kernel\n");
+printf("OpenVMS\n");
 break;
 case 14:
-printf("AROS\n");
+printf("NonStop Kernel\n");
 break;
 case 15:
-printf("Fenix OS\n");
+printf("AROS\n");
 break;
 case 16:
+printf("Fenix OS\n");
+break;
+case 17:
 printf("CloudABI\n");
 break;
 case 97:
