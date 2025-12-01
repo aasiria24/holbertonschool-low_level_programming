@@ -24,7 +24,6 @@ mode_t perm = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 
 if (ac != 3)
 {
-printf("Usage: cp file_from file_to\n");
 printf("97\n");
 exit(97);
 }
