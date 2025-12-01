@@ -26,7 +26,7 @@ dprintf(2, "Usage: cp file_from file_to\n"), exit(97);
 
 f1 = open(av[1], O_RDONLY);
 if (f1 == -1)
-dprintf(2, "Error: Can't read from file %s\n", av[1]), exit(98);
+printf("Error: Can't read from file %s\n", av[1]), exit(98);
 
 f2 = open(av[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 if (f2 == -1)
