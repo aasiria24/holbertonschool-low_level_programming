@@ -82,7 +82,11 @@ printf("<unknown: %d>\n", data);
 */
 void print_version(unsigned char version)
 {
-printf("  Version:                           %d\n", version);
+printf("  Version:                           %d", version);
+if (version == 1)
+printf(" (current)\n");
+else
+printf("\n");
 }
 
 /**
