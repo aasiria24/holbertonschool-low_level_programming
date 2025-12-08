@@ -85,6 +85,72 @@ current->snext = node;
 }
 
 /**
+* create_new_shash_node - Creates a new sorted hash node
+* @key: The key
+* @value: The value
+*
+* Return: Pointer to new node or NULL
+*/
+shash_node_t *create_new_shash_node(const char *key, const char *value)
+{
+shash_node_t *node;
+char *key_copy, *value_copy;
+
+/* Allocate memory for the node */
+node = malloc(sizeof(shash_node_t));
+if (node == NULL)
+return (NULL);
+
+/* Duplicate the key */
+key_copy = strdup(key);
+if (key_copy == NULL)
+{
+free(node);
+return (NULL);
+}
+
+/* Duplicate the value */
+value_copy = strdup(value);
+if (value_copy == NULL)
+{
+free(key_copy);
+free(node);
+return (NULL);
+}
+
+/* Initialize the node */
+node->key = key_copy;
+node->value = value_copy;
+node->next = NULL;
+node->sprev = NULL;
+node->snext = NULL;
+
+return (node);
+}
+
+/**
+* update_existing_node - Updates an existing node's value
+* @node: The node to update
+* @value: The new value
+*
+* Return: 1 on success, 0 on failure
+*/
+int update_existing_node(shash_node_t *node, const char *value)
+{
+char *value_copy;
+
+/* Create a copy of the new value */
+value_copy = strdup(value);
+if (value_copy == NULL)
+return (0);
+
+/* Free old value and assign new one */
+free(node->value);
+node->value = value_copy;
+return (1);
+}
+
+/**
 * shash_table_set - Adds an element to the sorted hash table
 * @ht: The sorted hash table to add or update the key/value to
 * @key: The key (cannot be an empty string)
@@ -96,7 +162,6 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 {
 shash_node_t *new_node, *temp;
 unsigned long int index;
-char *value_copy;
 
 /* Check if hash table, key, or value are NULL */
 if (ht == NULL || key == NULL || *key == '\0' || value == NULL)
@@ -110,39 +175,14 @@ temp = ht->array[index];
 while (temp != NULL)
 {
 if (strcmp(temp->key, key) == 0)
-{
-/* Key found, update the value */
-free(temp->value);
-value_copy = strdup(value);
-if (value_copy == NULL)
-return (0);
-temp->value = value_copy;
-return (1);
-}
+return (update_existing_node(temp, value));
 temp = temp->next;
 }
 
 /* Key doesn't exist, create a new node */
-new_node = malloc(sizeof(shash_node_t));
+new_node = create_new_shash_node(key, value);
 if (new_node == NULL)
 return (0);
-
-/* Duplicate the key and value */
-new_node->key = strdup(key);
-if (new_node->key == NULL)
-{
-free(new_node);
-return (0);
-}
-
-value_copy = strdup(value);
-if (value_copy == NULL)
-{
-free(new_node->key);
-free(new_node);
-return (0);
-}
-new_node->value = value_copy;
 
 /* Add the new node to the collision chain (at the beginning) */
 new_node->next = ht->array[index];
@@ -284,6 +324,20 @@ ht->stail = node->sprev; /* Node was the tail */
 }
 
 /**
+* free_shash_node - Frees a sorted hash node
+* @node: The node to free
+*/
+void free_shash_node(shash_node_t *node)
+{
+/* Free the key and value */
+free(node->key);
+free(node->value);
+
+/* Free the node itself */
+free(node);
+}
+
+/**
 * shash_table_delete - Deletes a sorted hash table
 * @ht: The sorted hash table to delete
 */
@@ -309,12 +363,8 @@ temp = node->next;
 /* Remove node from sorted list */
 sorted_list_remove(ht, node);
 
-/* Free the key and value */
-free(node->key);
-free(node->value);
-
-/* Free the node itself */
-free(node);
+/* Free the node */
+free_shash_node(node);
 
 /* Move to the next node */
 node = temp;
