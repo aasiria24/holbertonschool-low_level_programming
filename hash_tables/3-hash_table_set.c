@@ -15,15 +15,17 @@ hash_node_t *new_node, *temp;
 unsigned long int index;
 char *value_copy;
 
-if (!ht || !key || !*key || !value) return (0);
+if (ht == NULL || key == NULL || *key == '\0' || value == NULL)
+return (0);
 
 value_copy = strdup(value);
-if (!value_copy) return (0);
+if (value_copy == NULL)
+return (0);
 
 index = key_index((const unsigned char *)key, ht->size);
 temp = ht->array[index];
 
-while (temp)
+while (temp != NULL)
 {
 if (strcmp(temp->key, key) == 0)
 {
@@ -35,14 +37,14 @@ temp = temp->next;
 }
 
 new_node = malloc(sizeof(hash_node_t));
-if (!new_node)
+if (new_node == NULL)
 {
 free(value_copy);
 return (0);
 }
 
 new_node->key = strdup(key);
-if (!new_node->key)
+if (new_node->key == NULL)
 {
 free(value_copy);
 free(new_node);
