@@ -1,5 +1,5 @@
 #include "hash_tables.h"
-
+#include <string.h>
 /**
 * hash_table_set - Adds an element to the hash table
 * @ht: The hash table to add or update the key/value to
@@ -57,6 +57,15 @@ free(new_node);
 return (0);
 }
 
+/* Set the node values */
+new_node->value = value_copy;
+
+/* Add the new node at the beginning of the list */
+new_node->next = ht->array[index];
+ht->array[index] = new_node;
+
+return (1);
+}
 /* Set the node values */
 new_node->value = value_copy;
 
